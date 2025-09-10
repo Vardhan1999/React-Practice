@@ -1,18 +1,13 @@
-import React, { useState } from "react"
-
+import React, { useState, useEffect } from "react"
 
 export default function App() {
+  const [seconds, setSeconds] = useState(0);
 
-  const [open, setOpen] = useState();
-  return (
-    <div>
-      <button onClick={() => setOpen(true)}>Open Modal</button>
-      {open && (
-        <div>
-          <div>Modal Content</div>
-          <button onClick={() => setOpen(false)}>Close</button>
-        </div>
-      )}
-    </div>)
+  useEffect(() => {
+    const interval = setInterval(() => setSeconds(prev => prev + 1), 1000)
+    return () => clearInterval(interval)
+  }, []);
+
+  return <h2>Timer:{seconds}s</h2>;
 }
 
