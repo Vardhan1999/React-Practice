@@ -6,7 +6,7 @@ on:
       - main # run automatically on push to main
     paths-ignore:
       - README.md # ignore changes to README
-  workflow_dispatch: # allows manual run via "Run workflow" button
+  workflow_dispatch:
 
 jobs:
   test:
