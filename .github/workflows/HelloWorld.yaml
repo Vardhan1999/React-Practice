@@ -1,6 +1,6 @@
 name: Great User
 
-on: push
+on: workflow_dispatch
 
 jobs:
   greet:
