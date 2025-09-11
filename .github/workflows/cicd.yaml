@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 permissions:
   contents: write
   pages: write
-  id-token: write
+  id-token: write  # Required for deploy-pages action
 
 on:
   push:
@@ -36,8 +36,17 @@ jobs:
       - name: Setup Node & Install
         uses: ./.github/actions/setup-node
 
+      - name: Clean previous dist folder
+        run: rm -rf dist
+
       - name: Build project
         run: npm run build
+
+      - name: Remove symlinks from dist
+        run: find dist -type l -delete
+
+      - name: Remove unnecessary files
+        run: rm -f dist/.DS_Store || true
 
       - name: Upload production-ready build as artifact
         uses: actions/upload-artifact@v4
