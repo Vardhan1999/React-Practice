@@ -9,5 +9,6 @@ export default function App() {
   }, []);
 
   return <h2>Timer:{seconds}s</h2>;
+  //Comment
 }
 
