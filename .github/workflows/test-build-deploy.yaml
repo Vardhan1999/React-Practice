@@ -5,7 +5,7 @@ on:
     branches:
       - main # run automatically on push to main
     paths-ignore:
-      - README.md # ignore changes to README
+      - README.md
   workflow_dispatch:
 
 jobs:
