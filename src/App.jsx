@@ -1,14 +1,24 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react";
 
 export default function App() {
-  const [seconds, setSeconds] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => setSeconds(prev => prev + 1), 1000)
-    return () => clearInterval(interval)
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then(res => res.json())
+      .then(data => {
+        setUsers(data);
+        setLoading(false)
+      })
   }, []);
 
-  return <h2>Timer:{seconds}s</h2>;
-  //Comment Done
+  if (loading) return <p>Loading...</p>
+
+  return (
+    <ul>
+      {users.map(user => <li key={user.id}>{user.name}</li>)}
+    </ul>
+  )
 }
 
