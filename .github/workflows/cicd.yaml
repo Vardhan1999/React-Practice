@@ -42,10 +42,10 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Prepare clean deploy folder
+      - name: Prepare clean deploy folder (only regular files)
         run: |
           mkdir dist_clean
-          rsync -a --copy-links dist/ dist_clean/
+          find dist -type f -exec cp --parents {} dist_clean/ \;
 
       - name: Remove unnecessary files
         run: rm -f dist_clean/.DS_Store || true
