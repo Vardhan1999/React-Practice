@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 export default function App() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then(res => res.json())
-      .then(data => {
-        setUsers(data);
-        setLoading(false)
-      })
-  }, []);
-
-  if (loading) return <p>Loading...</p>
+  const [dark, setDark] = useState(false);
 
   return (
-    <ul>
-      {users.map(user => <li key={user.id}>{user.name}</li>)}
-    </ul>
-  )
+    <div
+      style={{
+        backgroundColor: dark ? "black" : "white",
+        color: dark ? "white" : "black",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection:"column",
+        alignItems:"center",
+        justifyContent:"center"
+      }}
+    >
+      <button onClick={() => setDark(!dark)}>
+        Toggle Theme
+      </button>
+      <p>{dark ? "Dark Mode" : "Light Mode"}</p>
+    </div>
+  );
 }
-
