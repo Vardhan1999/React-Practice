@@ -1,17 +1,23 @@
 import React, { useState } from "react";
 
 export default function App() {
-  const items = Array.from({ length: 30 }, (_, i) => `Item ${i + 1}`);
-  const [page, setPage] = useState(1);
-  const perPage = 5;
-  const start = (page - 1) * perPage;
-  const paginated = items.slice(start, start + perPage);
+  const images = [
+    { id: 1, thumb: "https://picsum.photos/id/101/100/75", large: "https://picsum.photos/id/101/600/400" },
+    { id: 2, thumb: "https://picsum.photos/id/102/100/75", large: "https://picsum.photos/id/102/600/400" },
+    { id: 3, thumb: "https://picsum.photos/id/103/100/75", large: "https://picsum.photos/id/103/600/400" },
+  ];
+
+  const [active, setActive] = useState(images[0].large);
 
   return (
     <div>
-      <ul>{paginated.map(item => <li key={item}>{item}</li>)}</ul>
-      <button disabled={page === 1} onClick={() => setPage(page - 1)}>Prev</button>
-      <button disabled={start + perPage >= items.length} onClick={() => setPage(page + 1)}>Next</button>
+      <img src={active} alt="Large" />
+
+      <div>
+        {images.map((img) => (
+          <img key={img.id} src={img.thumb} alt={`Thunmbnail ${img.id}`} onClick={() => setActive(img.large)} />
+        ))}
+      </div>
     </div>
   )
 }
