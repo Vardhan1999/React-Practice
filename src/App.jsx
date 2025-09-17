@@ -1,23 +1,51 @@
 import React, { useState } from "react";
 
 export default function App() {
-  const images = [
-    { id: 1, thumb: "https://picsum.photos/id/101/100/75", large: "https://picsum.photos/id/101/600/400" },
-    { id: 2, thumb: "https://picsum.photos/id/102/100/75", large: "https://picsum.photos/id/102/600/400" },
-    { id: 3, thumb: "https://picsum.photos/id/103/100/75", large: "https://picsum.photos/id/103/600/400" },
-  ];
+  const [city, setCity] = useState("");
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState(null);
 
-  const [active, setActive] = useState(images[0].large);
+  const mockWeather = {
+    London: { name: "London", country: "GB", temp: 18, description: "Cloudy" },
+    Paris: { name: "Paris", country: "FR", temp: 21, description: "Sunny" },
+    Tokyo: { name: "Tokyo", country: "JP", temp: 25, description: "Rainy" }
+  }
+
+  async function fetchWeather() {
+    if (!city.trim()) return;
+    setLoading(true);
+    setErr(null);
+
+    setTimeout(() => {
+      const result = mockWeather[city];
+      if (result) {
+        setData(result)
+      }
+      else {
+        setErr("City not found")
+        setData(null);
+      }
+      setLoading(false);
+    }, 1000)
+  }
 
   return (
     <div>
-      <img src={active} alt="Large" />
-
-      <div>
-        {images.map((img) => (
-          <img key={img.id} src={img.thumb} alt={`Thunmbnail ${img.id}`} onClick={() => setActive(img.large)} />
-        ))}
-      </div>
+      <h3>Weather</h3>
+      <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Enter City" />
+      <button onClick={fetchWeather}>Search</button>
+      {loading && <p>Loading...</p>}
+      {err && <p>{err}</p>}
+      {data && (
+        <div>
+          <h4>
+            {data.name} -- {data.country}
+          </h4>
+          <p>Temp:{data.temp}C</p>
+          <p>Weather:{data.description}</p>
+        </div>
+      )}
     </div>
   )
 }
