@@ -26,7 +26,7 @@ export default function App() {
         setErr("City not found")
         setData(null);
       }
-      setLoading(false);
+      setLoading(false)
     }, 1000)
   }
 
