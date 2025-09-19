@@ -1,57 +1,48 @@
 import React, { useState } from "react";
 
 export default function App() {
-  const products = [
-    { id: "p1", name: "Shoes", price: 49.99 },
-    { id: "p2", name: "Hat", price: 19.5 },
-    { id: "p3", name: "T-Shirt", price: 25.0 },
-  ];
+  const questions = [
+    { id: 1, q: "2+2=?", options: ["3", "4", "5"], answer: 1 },
+    { id: 2, q: "Capital of France?", options: ["Paris", "London", "Rome"], answer: 0 },
+  ]
 
-  const [cart, setCart] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [finished, setFinished] = useState(false);
 
-  function addToCart(product) {
-    setCart((prev) => {
-      const existing = prev.find((p) => p.id === product.id);
-      if (existing) {
-        return prev.map((p) => p.id === product.id ? { ...p, qty: p.qty + 1 } : p);
-      }
-      return [...prev, { ...product, qty: 1 }];
-    });
+  function choose(optionIndex) {
+    if (optionIndex === questions[index].answer) {
+      setScore((s) => s + 1);
+    }
+    const next = index + 1;
+    if (next >= questions.length) {
+      setFinished(true);
+    }
+    else {
+      setIndex(next)
+    }
   }
 
-  function removeFromCart(id) {
-    setCart((prev) => prev.filter((p) => p.id !== id));
+  if (finished) {
+    return (
+      <div>
+        Your Score:{score}/{questions.length}
+      </div>
+    )
   }
 
-  const total = cart.reduce((sum, p) => sum + p.qty * p.price, 0).toFixed(2);
+  const current = questions[index];
 
   return (
     <div>
-      <h3>Products</h3>
+      <h3>{current.q}</h3>
       <ul>
-        {products.map(p => (
-          <li key={p.id}>
-            {p.name} -- ${p.price}
-            <button onClick={() => addToCart(p)}>Add</button>
+        {current.options.map((opt, i) => (
+          <li key={i}>
+            <button onClick={() => choose(i)}>{opt}</button>
           </li>
         ))}
       </ul>
-
-      <h3>Cart</h3>
-      {cart.length === 0 ? (
-        <p>Empty</p>
-      ) : (<>
-        <ul>
-          {cart.map(item => (
-            <li key={item.id}>
-              {item.name} x {item.qty} -- $
-              {(item.qty * item.price).toFixed(2)}
-              <button onClick={() => removeFromCart(item.id)}>Remove</button>
-            </li>
-          ))}
-        </ul>
-        <strong>Total: ${total}</strong>
-      </>)}
     </div>
   )
 }
