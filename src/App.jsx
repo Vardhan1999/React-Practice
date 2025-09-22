@@ -1,47 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+function useDebounce(value, delay = 300) {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay)
+
+    return () => clearTimeout(t)
+  }, [value, delay])
+
+  return debounced;
+}
 
 export default function App() {
-  const questions = [
-    { id: 1, q: "2+2=?", options: ["3", "4", "5"], answer: 1 },
-    { id: 2, q: "Capital of France?", options: ["Paris", "London", "Rome"], answer: 0 },
-  ]
+  const [q, setQ] = useState("");
+  const debouncedQ = useDebounce(q, 500);
+  const [result, setResult] = useState([]);
 
-  const [index, setIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [finished, setFinished] = useState(false);
+  useEffect(() => {
+    if (!debouncedQ) {
+      setResult([]);
+      return;
+    }
 
-  function choose(optionIndex) {
-    if (optionIndex === questions[index].answer) {
-      setScore((s) => s + 1);
-    }
-    const next = index + 1;
-    if (next >= questions.length) {
-      setFinished(true);
-    }
-    else {
-      setIndex(next)
-    }
-  }
+    const items = ['Apple', 'Banana', 'Cherry', 'Date', 'Guava'];
 
-  if (finished) {
-    return (
-      <div>
-        Your Score:{score}/{questions.length}
-      </div>
+    setResult(
+      items.filter((i) => i.toLowerCase().includes(debouncedQ.toLowerCase()))
     )
-  }
-
-  const current = questions[index];
+  }, [debouncedQ]);
 
   return (
     <div>
-      <h3>{current.q}</h3>
+      <input placeholder="Search..." value={q} onChange={(e) => setQ(e.target.value)} />
+      <p>Searching for: {debouncedQ}</p>
+
       <ul>
-        {current.options.map((opt, i) => (
-          <li key={i}>
-            <button onClick={() => choose(i)}>{opt}</button>
-          </li>
-        ))}
+        {result.map((r) => (<li key={r}>
+          {r}
+        </li>))}
       </ul>
     </div>
   )
