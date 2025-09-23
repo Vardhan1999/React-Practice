@@ -32,7 +32,7 @@ export default function App() {
 
   return (
     <div>
-      <input placeholder="Search..." value={q} onChange={(e) => setQ(e.target.value)} />
+      <input placeholder="Search.." value={q} onChange={(e) => setQ(e.target.value)} />
       <p>Searching for: {debouncedQ}</p>
 
       <ul>
