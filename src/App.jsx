@@ -1,23 +1,33 @@
-import { useState } from "react"
+import { cache, useEffect, useState } from "react";
+
+function useLocalStorage(key, initial) {
+  const [state, setState] = useState(() => {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : initial
+    }
+    catch {
+      return initial;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(key, JSON.stringify(state));
+    } catch { }
+  }, [key, state])
+
+  return [state, setState];
+}
 
 export default function App() {
-
-
-  const [text, setText] = useState("Copy this text");
-  const [copied, setCopied] = useState(false);
-
-  async function copy() {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  }
+  const [name, setName] = useLocalStorage("name", "");
 
   return (
     <div>
-      <input value={text} onChange={(e) => setText(e.target.value)} />
+      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your Name" />
 
-      <button onClick={copy}>Copy</button>
-      {copied && <span>Copied!</span>}
+      <p>Hello, {name || "stranger"}</p>
     </div>
   )
 }
