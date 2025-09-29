@@ -1,33 +1,41 @@
-import { cache, useEffect, useState } from "react";
-
-function useLocalStorage(key, initial) {
-  const [state, setState] = useState(() => {
-    try {
-      const raw = localStorage.getItem(key);
-      return raw ? JSON.parse(raw) : initial
-    }
-    catch {
-      return initial;
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(key, JSON.stringify(state));
-    } catch { }
-  }, [key, state])
-
-  return [state, setState];
-}
+import { useState } from "react";
 
 export default function App() {
-  const [name, setName] = useLocalStorage("name", "");
+
+  const [items, setItems] = useState(["Item A", "Item B", "Item C"]);
+  const [dragIndex, setDragIndex] = useState(null);
+
+  function onDragStart(e, idx) {
+    setDragIndex(idx);
+    e.dataTransfer.effectAllowed = "move";
+  }
+
+  function onDrop(e, idx) {
+    e.preventDefault();
+    const newItems = [...items];
+    const [moved] = newItems.splice(dragIndex, 1);
+    newItems.splice(idx, 0, moved);
+    setItems(newItems);
+    setDragIndex(null);
+  }
+
+  function onDragOver(e) {
+    e.preventDefault();
+  }
 
   return (
-    <div>
-      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your Name" />
-
-      <p>Hello, {name || "stranger"}</p>
-    </div>
-  )
+    <ul>
+      {items.map((it, idx) => (
+        <li
+          key={it}
+          draggable
+          onDragStart={(e) => onDragStart(e, idx)}
+          onDragOver={onDragOver}
+          onDrop={(e) => onDrop(e, idx)}
+        >
+          {it}
+        </li>
+      ))}
+    </ul>
+  );
 }
