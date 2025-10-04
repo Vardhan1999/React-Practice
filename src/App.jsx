@@ -1,18 +1,20 @@
 import { useState } from "react";
 
 export default function App() {
-  const [query, setQuery] = useState("");
-  const items = ["Apple", "Banana", "Cherry", "Date", "Onion"];
-  const filtered = items.filter(item => item.toLowerCase().includes(query.toLowerCase()));
+  const [open, setOpen] = useState(null);
+  const data = [
+    { id: 1, title: "Section 1", content: "Content of section 1" },
+    { id: 2, title: "Section 2", content: "Content of section 2" },
+  ]
 
   return (
     <div>
-      <input placeholder="Search..." onChange={(e) => setQuery(e.target.value)} value={query} />
-      <ul>
-        {
-          filtered.map((item, idx) => (<li key={idx}>{item}</li>))
-        }
-      </ul>
+      {data.map(item => (
+        <div key={item.id}>
+          <h3 onClick={() => setOpen(open === item.id ? null : item.id)}>{item.title}</h3>
+          {open === item.id && <p>{item.content}</p>}
+        </div>
+      ))}
     </div>
   )
 }
