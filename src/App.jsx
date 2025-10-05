@@ -9,8 +9,8 @@ export default function App() {
       <button onClick={() => setActive("tab2")}>Tab 2</button>
 
       <div>
-        {active === "tab1" && <p>Content of Tab 1!</p>}
-        {active === "tab2" && <p>Content of Tab 2!</p>}
+        {active === "tab1" && <p>Content of Tab 1!!</p>}
+        {active === "tab2" && <p>Content of Tab 2!!</p>}
       </div>
     </div>
   )
