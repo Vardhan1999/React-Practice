@@ -10,7 +10,7 @@ export default function App() {
 
       <div>
         {active === "tab1" && <p>Content of Tab 1!</p>}
-        {active === "tab2" && <p>Content of Tab 2</p>}
+        {active === "tab2" && <p>Content of Tab 2!</p>}
       </div>
     </div>
   )
