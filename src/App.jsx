@@ -1,17 +1,17 @@
 import { useState } from "react";
 
 export default function App() {
-  const [active, setActive] = useState("tab1");
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
-      <button onClick={() => setActive("tab1")}>Tab 1</button>
-      <button onClick={() => setActive("tab2")}>Tab 2</button>
-
-      <div>
-        {active === "tab1" && <p>Content of Tab 1!!</p>}
-        {active === "tab2" && <p>Content of Tab 2!!</p>}
-      </div>
+      <button onClick={() => setOpen(true)}>Open Modal</button>
+      {open && (
+        <div>
+          <div>Modal Content</div>
+          <button onClick={() => setOpen(false)}>Close</button>
+        </div>
+      )}
     </div>
   )
 }
