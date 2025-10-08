@@ -9,5 +9,5 @@ export default function App() {
     return () => clearInterval(interval);
   }, [])
 
-  return <h2>Timer: {seconds}s</h2>
+  return <h2>Timer: {seconds}'s</h2>
 }
