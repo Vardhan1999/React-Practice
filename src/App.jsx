@@ -15,7 +15,7 @@ export default function App() {
       transition: "all 0.3s ease"
     }}>
       <button onClick={() => setDark(!dark)}>Toggle Theme</button>
-      <p>{dark ? "Dark Mode" : "Light Mode"}</p>
+      <p>{dark ? "Dark Mod" : "Light Mode"}</p>
     </div>
   )
 }
